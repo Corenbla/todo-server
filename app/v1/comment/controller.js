@@ -85,4 +85,4 @@ const deleteItem = async (req, res) => {
   return res.status(200).json(item[0])
 }
 
-module.exports = { updateItem, checkItem, deleteItem }
+module.exports = { updateComment: updateItem, checkComment: checkItem, deleteComment: deleteItem }

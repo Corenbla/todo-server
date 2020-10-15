@@ -3,7 +3,7 @@ const R = require('ramda')
 
 const db = require.main.require('./helpers/db.js')
 const logger = require.main.require('./helpers/logger.js')
-const { createSchema } = require.main.require('./app/v1/item/schema.js')
+const { createSchema } = require.main.require('./app/v1/comment/schema.js')
 
 const getAll = async (req, res) => {
   const { listId } = req.params
@@ -64,4 +64,4 @@ const createItem = async (req, res) => {
   return res.status(200).json(item[0])
 }
 
-module.exports = { getAll, createItem }
+module.exports = { getAll, createComment: createItem }

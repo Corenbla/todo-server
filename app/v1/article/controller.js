@@ -124,4 +124,4 @@ const deleteList = async (req, res) => {
   return res.status(200).json(list[0])
 }
 
-module.exports = { getAll, getById, createList, updateList, deleteList }
+module.exports = { getAll, getById, createArticle: createList, updateArticle: updateList, deleteArticle: deleteList }
