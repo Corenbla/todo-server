@@ -7,6 +7,10 @@ const logger = require.main.require('./helpers/logger.js');
 const deleteComment = async (req, res) => {
     const {id} = req.params;
 
+    if (!req.user.is_admin) {
+        return res.sendStatus(403);
+    }
+
     const [commentErr, comment] = await to(
         db('comment').del().where({id}).returning('*'),
     );

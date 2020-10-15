@@ -52,6 +52,8 @@ const getById = async (req, res) => {
 const createArticle = async (req, res) => {
     // Validate input with Joi schema
     const {error: schemaErr, value: body} = createSchema.validate(req.body);
+    body.author_id = req.user.id;
+
     if (!R.isNil(schemaErr)) {
         const error = `Error in input (err: ${schemaErr})`;
         logger.error(error);
@@ -85,27 +87,43 @@ const updateArticle = async (req, res) => {
     }
 
     const [articleErr, article] = await to(
-        db('article')
-            .update({...body, updated_at: new Date()})
-            .where({id})
-            .returning('*'),
+        db('article').where({id})
     );
     if (!R.isNil(articleErr)) {
         logger.error(`${articleErr}`);
         return res.status(500).json({error: `${articleErr}`});
     }
 
-    if (R.isEmpty(article)) {
+    if (req.user.id != article[0].author_id) {
+        return res.sendStatus(403);
+    }
+
+    const [articleUpdateErr, articleUpdate] = await to(
+        db('article')
+            .update({...body, updated_at: new Date()})
+            .where({id})
+            .returning('*'),
+    );
+    if (!R.isNil(articleUpdateErr)) {
+        logger.error(`${articleUpdateErr}`);
+        return res.status(500).json({error: `${articleUpdateErr}`});
+    }
+
+    if (R.isEmpty(articleUpdate)) {
         const error = `No article for id ${id}`;
         logger.error(error);
         return res.status(500).json({error});
     }
 
-    return res.status(200).json(article[0]);
+    return res.status(200).json(articleUpdate[0]);
 };
 
 const deleteArticle = async (req, res) => {
     const {id} = req.params;
+
+    if (!req.user.is_admin) {
+        return res.sendStatus(403);
+    }
 
     const [articleErr, article] = await to(
         db('article').del().where({id}).returning('*'),

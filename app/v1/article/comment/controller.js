@@ -35,11 +35,12 @@ const getAll = async (req, res) => {
 };
 
 const createComment = async (req, res) => {
-    // TODO : author_id of the comment
     const {articleId} = req.params;
 
     // Validate input with Joi schema
     const {error: schemaErr, value: body} = createSchema.validate(req.body);
+    body.author_id = req.user.id;
+
     if (!R.isNil(schemaErr)) {
         const error = `Error in input (err: ${schemaErr})`;
         logger.error(error);
