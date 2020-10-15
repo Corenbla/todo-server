@@ -7,6 +7,12 @@ const createSchema = Joi.object({
         .min(1)
         .required()
     ,
+    content: Joi.string()
+        .pattern(/^[0-z\s]+$/)
+        .trim()
+        .min(1)
+        .required()
+    ,
 });
 
 module.exports = {createSchema};
