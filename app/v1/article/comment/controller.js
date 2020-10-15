@@ -6,12 +6,12 @@ const logger = require.main.require('./helpers/logger.js');
 const {createSchema} = require.main.require('./app/v1/comment/schema.js');
 
 const getAll = async (req, res) => {
-    const {listId} = req.params;
+    const {articleId} = req.params;
 
-    const [itemsErr, items] = await to(
-        db('item')
+    const [commentsErr, comments] = await to(
+        db('comment')
             .select()
-            .where({list_id: listId})
+            .where({article_id: articleId})
             .andWhere((builder) => {
                 const {title, done} = req.query;
 
@@ -26,16 +26,17 @@ const getAll = async (req, res) => {
                 return builder;
             }),
     );
-    if (!R.isNil(itemsErr)) {
-        logger.error(itemsErr);
-        return res.status(500).json({error: `${itemsErr}`});
+    if (!R.isNil(commentsErr)) {
+        logger.error(commentsErr);
+        return res.status(500).json({error: `${commentsErr}`});
     }
 
-    return res.status(200).json(items);
+    return res.status(200).json(comments);
 };
 
-const createItem = async (req, res) => {
-    const {listId} = req.params;
+const createComment = async (req, res) => {
+    // TODO : author_id of the comment
+    const {articleId} = req.params;
 
     // Validate input with Joi schema
     const {error: schemaErr, value: body} = createSchema.validate(req.body);
@@ -45,23 +46,23 @@ const createItem = async (req, res) => {
         return res.status(400).json({error});
     }
 
-    const [itemErr, item] = await to(
-        db('item')
-            .insert({...body, list_id: listId})
+    const [commentErr, comment] = await to(
+        db('comment')
+            .insert({...body, article_id: articleId})
             .returning('*'),
     );
-    if (!R.isNil(itemErr)) {
-        logger.error(itemErr);
-        return res.status(500).json({error: `${itemErr}`});
+    if (!R.isNil(commentErr)) {
+        logger.error(commentErr);
+        return res.status(500).json({error: `${commentErr}`});
     }
 
-    if (R.isEmpty(item)) {
+    if (R.isEmpty(comment)) {
         const error = 'No row written';
         logger.error(error);
         return res.status(500).json({error});
     }
 
-    return res.status(200).json(item[0]);
+    return res.status(200).json(comment[0]);
 };
 
-module.exports = {getAll, createComment: createItem};
+module.exports = {getAll, createComment: createComment};
