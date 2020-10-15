@@ -1,7 +1,7 @@
 const router = require('express').Router();
 
 const controller = require('./controller.js');
-const commentRouter = require('./comment/router.js');
+const commentRouter = require('./comment/router');
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
