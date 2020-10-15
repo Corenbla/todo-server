@@ -1,7 +1,7 @@
-const router = require('express').Router()
+const router = require('express').Router();
 
-const controller = require('./controller.js')
+const controller = require('./controller.js');
 
-router.delete(`/:id`, controller.deleteComment)
+router.delete(`/:id`, controller.deleteComment);
 
-module.exports = router
+module.exports = router;

@@ -1,1 +1,1 @@
-module.exports = require('knex')(require.main.require('./knexfile.js'))
+module.exports = require('knex')(require.main.require('./knexfile.js'));

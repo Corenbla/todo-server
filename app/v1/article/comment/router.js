@@ -1,11 +1,11 @@
-const router = require('express').Router()
+const router = require('express').Router();
 
-const controller = require('./controller.js')
+const controller = require('./controller.js');
 
 // Express does not resolve params with use so we have to explicitly tell the full route here
-const baseRoute = '/:listId/comment'
+const baseRoute = '/:listId/comment';
 
-router.get(`${baseRoute}/`, controller.getAll)
-router.post(`${baseRoute}/`, controller.createComment)
+router.get(`${baseRoute}/`, controller.getAll);
+router.post(`${baseRoute}/`, controller.createComment);
 
-module.exports = router
+module.exports = router;

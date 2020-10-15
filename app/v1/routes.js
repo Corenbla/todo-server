@@ -1,9 +1,9 @@
-const router = require('express').Router()
+const router = require('express').Router();
 
-const article = require('./article/router.js')
-const comment = require('./comment/router.js')
+const article = require('./article/router.js');
+const comment = require('./comment/router.js');
 
-router.use('/article', article)
-router.use('/comment', comment)
+router.use('/article', article);
+router.use('/comment', comment);
 
-module.exports = router
+module.exports = router;

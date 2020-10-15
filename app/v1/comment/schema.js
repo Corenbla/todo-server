@@ -1,11 +1,12 @@
-const Joi = require('joi')
+const Joi = require('joi');
 
 const createSchema = Joi.object({
-  title: Joi.string()
-    .pattern(/^[0-z\s]+$/)
-    .trim()
-    .min(1)
-    .required(),
-})
+    title: Joi.string()
+        .pattern(/^[0-z\s]+$/)
+        .trim()
+        .min(1)
+        .required()
+    ,
+});
 
-module.exports = { createSchema }
+module.exports = {createSchema};
